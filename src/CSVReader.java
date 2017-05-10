@@ -4,6 +4,11 @@ import java.io.IOException;
 
 public class CSVReader {
 	
+	/**
+	 * Leer CSV utilizabndo estructura de arreglo
+	 * @param path
+	 * @return
+	 */
 	public static ArrayStructure CSVReaderArray(String path){
 		ArrayStructure arr = new ArrayStructure();
         String line = "";
@@ -23,6 +28,11 @@ public class CSVReader {
 		return arr;
 	}
 	
+	/**
+	 * Leer CSV utilizando una estructura Lista vinculada, agregando nodo al principio
+	 * @param path
+	 * @return
+	 */
 	public static ListStructure CSVReaderListBegining(String path){
 		ListStructure list = new ListStructure();
         String line = "";
@@ -42,17 +52,22 @@ public class CSVReader {
 		return list;
 	}
 	
-	public static ListStructure CSVReaderListEnd(String path){
+	/**
+	 * Leer CSV utilizando una estructura Lista vinculada, agregando nodo al final
+	 * @param path
+	 * @return
+	 */
+	public static ListStructure CSVReaderListEnd(String path){	
 		ListStructure list = new ListStructure();
         String line = "";
         String cvsSplitBy = ";";
-
+        
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
 
-            while ((line = br.readLine()) != null) {
+        	while ((line = br.readLine()) != null) {
 
                 String[] items = line.split(cvsSplitBy); 
-                list.addEnd(items[0]);
+                list.addEnd(items[0]);  
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -60,16 +75,6 @@ public class CSVReader {
 		
 		return list;
 	}
-
-    public static void main(String[] args) {
-		ArrayStructure arr = new ArrayStructure();
-		
-		arr = CSVReader.CSVReaderArray("datasets/dataset_500000.csv");
-		
-		for (int i = 0; i < arr.size(); i++) {
-			System.out.println(arr.get(i));
-		}
-
-    }
+	
     
 }

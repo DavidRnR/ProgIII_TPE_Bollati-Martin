@@ -5,17 +5,24 @@ public class ArrayApp {
 
 		//**************Array*********************************************
 		ArrayStructure arr;
+		
+		ArrayStructure arrInsert;
+		ArrayStructure arrInsertResults;
+		
 		ArrayStructure arrSearch;
 		ArrayStructure arrSearchResults;
 			
 		arr = CSVReader.CSVReaderArray("datasets/dataset_500000.csv");
-		arr.addAll(CSVReader.CSVReaderArray("datasets/dataset_insert_10000.csv"));
+		
+		arrInsert = CSVReader.CSVReaderArray("datasets/dataset_insert_10000.csv");
+		arrInsertResults = ArrayApp.insertResults(arr, arrInsert);
+		
+		CSVWriter.writeFromArray(arrInsertResults, "salida_insert_array");
 		
 		arrSearch = CSVReader.CSVReaderArray("datasets/dataset_busqueda_10000.csv");
 		arrSearchResults = ArrayApp.searchResults(arr, arrSearch);
 		
 		CSVWriter.writeFromArray(arrSearchResults, "salida_busqueda_array");
-//		CSVWriter.writeFromArray(arr);
 		
 		//*****************************************************************		
 	}
@@ -41,15 +48,21 @@ public class ArrayApp {
 		return result;
 	} 
 	
-	//TODO Al insertar un CSV en otro se deben grabar los tiempos.
-//	public static ArrayStructure insertResults(ArrayStructure base, ArrayStructure toInsert){
-//		ArrayStructure result = new ArrayStructure();
-//
-//		for (int i = 0; i < toInsert.size(); i++) {
-//			long timeStart = System.currentTimeMillis();
-//			long timeNow = System.currentTimeMillis();
-//			result.add(toInsert.get(i) + " insertado en " + (timeNow - timeStart) + " ms");		
-//		}
-//		return result;
-//	} 
+	/**
+	 * Toma de tiempos de insercion de Strings en un arreglo.	
+	 * @param base
+	 * @param toInsert
+	 * @return
+	 */
+	public static ArrayStructure insertResults(ArrayStructure base, ArrayStructure toInsert){
+		ArrayStructure result = new ArrayStructure();
+
+		for (int i = 0; i < toInsert.size(); i++) {
+			long timeStart = System.currentTimeMillis();
+			base.add(toInsert.get(i));
+			long timeNow = System.currentTimeMillis();
+			result.add(toInsert.get(i) + " insertado en " + (timeNow - timeStart) + " ms");		
+		}
+		return result;
+	} 
 }

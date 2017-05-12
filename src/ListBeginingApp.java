@@ -7,8 +7,8 @@ public class ListBeginingApp {
 		
 		listBegin = CSVReader.CSVReaderListBegining("datasets/dataset_500000.csv");
 
-		//TODO AddAll() for List Structure
-		//		listBegin.addAll(CSVReader.CSVReaderArray("datasets/dataset_insert_10000.csv"));
+		
+		listBegin.addAllBegining(CSVReader.CSVReaderListBegining("datasets/dataset_insert_10000.csv"));
 		
 		ListStructure listSearch;
 		ListStructure listSearchResults;
@@ -21,6 +21,13 @@ public class ListBeginingApp {
 		
 		//***********************************************************************
 	}
+	
+	/**
+	 *  Metodo que guarda los tiempos de busqueda de un String en otra List | Ultilizando Add al principio	
+	 * @param base
+	 * @param toFind
+	 * @return
+	 */
 	public static ListStructure searchResults(ListStructure base, ListStructure toFind){
 		ListStructure result = new ListStructure();
 
@@ -36,5 +43,7 @@ public class ListBeginingApp {
 		}
 		return result;
 	} 
+	
+	//TODO Metodo de Insertar y tomar tiempos.
 
 }

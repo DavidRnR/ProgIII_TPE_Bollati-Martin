@@ -18,7 +18,7 @@ public class ArrayStructure {
 	}
 	
 	/**
-	 * 
+	 * Recibe un ArrayStructure y agrega cada elemento en el arreglo
 	 * @param array
 	 */
 	
@@ -60,6 +60,11 @@ public class ArrayStructure {
 		arr = newArray;
 	}
 	
+	/**
+	 * Busca en el arreglo si contiene el string pasado por param
+	 * @param value
+	 * @return
+	 */
 	public boolean contains(String value){
 		for (int i = 0; i < index; i++) {
 			if(value.equals(get(i)))

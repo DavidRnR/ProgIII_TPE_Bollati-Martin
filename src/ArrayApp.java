@@ -19,9 +19,12 @@ public class ArrayApp {
 		
 		//*****************************************************************		
 	}
-	
-	
-	
+	/**
+	 * Toma de tiempos de busqueda de String de un arreglo.	
+	 * @param base
+	 * @param toFind
+	 * @return
+	 */
 	public static ArrayStructure searchResults(ArrayStructure base, ArrayStructure toFind){
 		ArrayStructure result = new ArrayStructure();
 
@@ -37,4 +40,16 @@ public class ArrayApp {
 		}
 		return result;
 	} 
+	
+	//TODO Al insertar un CSV en otro se deben grabar los tiempos.
+//	public static ArrayStructure insertResults(ArrayStructure base, ArrayStructure toInsert){
+//		ArrayStructure result = new ArrayStructure();
+//
+//		for (int i = 0; i < toInsert.size(); i++) {
+//			long timeStart = System.currentTimeMillis();
+//			long timeNow = System.currentTimeMillis();
+//			result.add(toInsert.get(i) + " insertado en " + (timeNow - timeStart) + " ms");		
+//		}
+//		return result;
+//	} 
 }

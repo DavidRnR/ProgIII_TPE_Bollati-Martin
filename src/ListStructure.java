@@ -6,27 +6,28 @@ public class ListStructure {
 	public ListStructure () {
 		first = null;
 	}
-	
-	/**
-	 * 
-	 */
 
+	/**
+	 * Recibe una ListStructure y agrega cada elemento en la List al principio
+	 * @param ls
+	 */
 	public void addAllBegining(ListStructure ls){
 		for (int i = 0; i < ls.size(); i++) {
 			addBegining(ls.get(i));
 		}
 	}
 	
+
 	/**
-	 * 
+	 * Recibe una ListStructure y agrega cada elemento en la List al final
+	 * @param ls
 	 */
-	
 	public void addAllEnd(ListStructure ls){
 		for (int i = 0; i < ls.size(); i++) {
 			addEnd(ls.get(i));
 		}
 	}
-	
+
 	/**
 	 * Agrega un Nodo al principio de la lista
 	 * @param n
@@ -95,7 +96,7 @@ public class ListStructure {
 	 */
 	public String get(int pos){
 		String resp = "";  
-		
+
 		Node nodoActual = first;
 		while (nodoActual != null) {
 			if (pos == 0) {
@@ -114,7 +115,7 @@ public class ListStructure {
 	 * @return
 	 */
 	public boolean delete(int pos){		
-		
+
 		//Cuando solo tiene un elemento
 		if(pos == 0) {
 			first = first.getNext();
@@ -122,7 +123,7 @@ public class ListStructure {
 		}		
 
 		Node actualNode = first;
-		
+
 		while(actualNode != null && pos > 0){
 			if (pos == 1) {
 				Node temp = actualNode.getNext();
@@ -136,7 +137,11 @@ public class ListStructure {
 		return false;
 	}
 
-
+	/**
+	 * Busca en la List si contiene el string pasado por param
+	 * @param s
+	 * @return
+	 */
 	public boolean contains (String s) {
 		Node nodoActual = first;
 

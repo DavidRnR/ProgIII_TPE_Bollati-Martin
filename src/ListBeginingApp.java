@@ -11,17 +11,17 @@ public class ListBeginingApp {
 		ListStructure listSearch;
 		ListStructure listSearchResults;
 			
-		list = CSVReader.CSVReaderListBegining("datasets/dataset_500000.csv");
+		list = CSVReader.CSVReaderListBegining("datasets/dataset_3000000.csv");
 		
 		listInsert = CSVReader.CSVReaderListBegining("datasets/dataset_insert_10000.csv");
 		listInsertResults = ListBeginingApp.insertResults(list, listInsert);
 		
-		CSVWriter.writeFromList(listInsertResults, "salida_insert_list_begining");
+		CSVWriter.writeFromList(listInsertResults, "salida_insert_list_begining_300000");
 		
 		listSearch = CSVReader.CSVReaderListBegining("datasets/dataset_busqueda_10000.csv");
 		listSearchResults = ListBeginingApp.searchResults(list, listSearch);
 		
-		CSVWriter.writeFromList(listSearchResults, "salida_busqueda_list_begining");
+		CSVWriter.writeFromList(listSearchResults, "salida_busqueda_list_begining_3000000");
 		
 		
 		//***********************************************************************
@@ -42,7 +42,7 @@ public class ListBeginingApp {
 				long timeNow = System.nanoTime();
 				result.addBegining(toFind.get(i) + " encontrado en " + (timeNow - timeStart) + " ns");
 			}else{
-				long timeNow = System.currentTimeMillis();
+				long timeNow = System.nanoTime();
 				result.addBegining(toFind.get(i) + " no encontrado " + (timeNow - timeStart) + " ns");
 			}
 		}

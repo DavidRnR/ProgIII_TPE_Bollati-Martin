@@ -35,13 +35,13 @@ public class ListEndApp {
 		ListStructure result = new ListStructure();
 
 		for (int i = 0; i < toFind.size(); i++) {
-			long timeStart = System.currentTimeMillis();
+			long timeStart = System.nanoTime();
 			if (base.contains(toFind.get(i))) {
-				long timeNow = System.currentTimeMillis();
-				result.addEnd(toFind.get(i) + " encontrado en " + (timeNow - timeStart) + " ms");
+				long timeNow = System.nanoTime();
+				result.addEnd(toFind.get(i) + " encontrado en " + (timeNow - timeStart) + " ns");
 			}else{
-				long timeNow = System.currentTimeMillis();
-				result.addEnd(toFind.get(i) + " no encontrado " + (timeNow - timeStart) + " ms");
+				long timeNow = System.nanoTime();
+				result.addEnd(toFind.get(i) + " no encontrado " + (timeNow - timeStart) + " ns");
 			}
 		}
 		return result;
@@ -58,10 +58,10 @@ public class ListEndApp {
 		ListStructure result = new ListStructure();
 
 		for (int i = 0; i < toInsert.size(); i++) {
-			long timeStart = System.currentTimeMillis();
+			long timeStart = System.nanoTime();
 			base.addEnd(toInsert.get(i));
-			long timeNow = System.currentTimeMillis();
-			result.addEnd(toInsert.get(i) + " insertado en " + (timeNow - timeStart) + " ms");		
+			long timeNow = System.nanoTime();
+			result.addEnd(toInsert.get(i) + " insertado en " + (timeNow - timeStart) + " ns");		
 		}
 		return result;
 	} 

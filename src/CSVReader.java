@@ -18,8 +18,13 @@ public class CSVReader {
 
             while ((line = br.readLine()) != null) {
 
-                String[] items = line.split(cvsSplitBy); 
-                arr.add(items[0]);
+            	String[] items = line.split(cvsSplitBy);
+                items = checkPreferences(items);
+                String aux = "";
+                for (int i = 0; i < items.length; i++) {
+                	aux += items[i] + " ";
+				}
+                arr.add(aux);	
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -42,8 +47,13 @@ public class CSVReader {
 
             while ((line = br.readLine()) != null) {
 
-                String[] items = line.split(cvsSplitBy); 
-                list.addBegining(items[0]);
+                String[] items = line.split(cvsSplitBy);
+                items = checkPreferences(items);
+                String aux = "";
+                for (int i = 0; i < items.length; i++) {
+                	aux += items[i] + " ";
+				}
+                list.addBegining(aux);					
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -66,8 +76,13 @@ public class CSVReader {
 
         	while ((line = br.readLine()) != null) {
 
-                String[] items = line.split(cvsSplitBy); 
-                list.addEnd(items[0]);  
+        		String[] items = line.split(cvsSplitBy);
+                items = checkPreferences(items);
+                String aux = "";
+                for (int i = 0; i < items.length; i++) {
+                	aux += items[i] + " ";
+				}
+                list.addEnd(aux);	 
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -76,5 +91,20 @@ public class CSVReader {
 		return list;
 	}
 	
-    
+    private static String[] checkPreferences(String[] arr){
+    	
+    	ListStructure ls = new ListStructure();
+    	for (int i = 0; i < arr.length; i++) {
+			if(!ls.contains(arr[i])){
+				ls.addEnd(arr[i]);
+			}
+		}
+    	
+    	arr = new String[ls.size()];
+    	
+    	for (int i = 0; i < ls.size(); i++) {
+			arr[i] = ls.get(i);
+		}
+    	return arr;
+    } 
 }

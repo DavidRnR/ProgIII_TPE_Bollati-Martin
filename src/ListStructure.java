@@ -6,7 +6,27 @@ public class ListStructure {
 	public ListStructure () {
 		first = null;
 	}
+	
+	/**
+	 * 
+	 */
 
+	public void addAllBegining(ListStructure ls){
+		for (int i = 0; i < ls.size(); i++) {
+			addBegining(ls.get(i));
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	
+	public void addAllEnd(ListStructure ls){
+		for (int i = 0; i < ls.size(); i++) {
+			addEnd(ls.get(i));
+		}
+	}
+	
 	/**
 	 * Agrega un Nodo al principio de la lista
 	 * @param n
@@ -41,7 +61,7 @@ public class ListStructure {
 	 * Retorna el tamano de la lista vinculada	
 	 * @return
 	 */
-	public int getSize() {
+	public int size() {
 		return index;
 	}
 
@@ -117,7 +137,7 @@ public class ListStructure {
 	}
 
 
-	public boolean containsValue (String s) {
+	public boolean contains (String s) {
 		Node nodoActual = first;
 
 		while(nodoActual != null) {

@@ -18,6 +18,17 @@ public class ArrayStructure {
 	}
 	
 	/**
+	 * 
+	 * @param array
+	 */
+	
+	public void addAll(ArrayStructure array){
+		for (int i = 0; i < array.size(); i++) {
+			add(array.get(i));
+		}
+	}
+	
+	/**
 	 * Obtener un valor del arreglo (arr) por pos
 	 * @param i
 	 * @return
@@ -47,5 +58,13 @@ public class ArrayStructure {
 			newArray[i] = arr[i];
 		}
 		arr = newArray;
+	}
+	
+	public boolean contains(String value){
+		for (int i = 0; i < index; i++) {
+			if(value.equals(get(i)))
+				return true;
+		}
+		return false;
 	}
 }

@@ -10,19 +10,26 @@ public class ListBeginingApp {
 		
 		ListStructure listSearch;
 		ListStructure listSearchResults;
-			
+		long timeStartInsert = System.nanoTime();
 		list = CSVReader.CSVReaderListBegining("datasets/dataset_3000000.csv");
 		
 		listInsert = CSVReader.CSVReaderListBegining("datasets/dataset_insert_10000.csv");
 		listInsertResults = ListBeginingApp.insertResults(list, listInsert);
 		
-		CSVWriter.writeFromList(listInsertResults, "salida_insert_list_begining_300000");
+		CSVWriter.writeFromList(listInsertResults, "salida_insert_list_begining_3010000");
+		long timeEndInsert = System.nanoTime();
+		long totalInsert = timeEndInsert - timeStartInsert;
+		System.out.println("Tiempo total de Insert ListStructure ingresando al principio: " + totalInsert + "ns");
 		
+		long timeStartSearch = System.nanoTime();
 		listSearch = CSVReader.CSVReaderListBegining("datasets/dataset_busqueda_10000.csv");
 		listSearchResults = ListBeginingApp.searchResults(list, listSearch);
 		
 		CSVWriter.writeFromList(listSearchResults, "salida_busqueda_list_begining_3000000");
-		
+		long timeEndSearch = System.nanoTime();
+		long totalSearch = timeEndSearch - timeStartSearch;
+		System.out.println("Tiempo total de Busqueda ListStructure Begining: " + totalSearch + "ns");
+		System.out.println("Promedio: "+((totalInsert+totalSearch)/2)+"ns");
 		
 		//***********************************************************************
 	}

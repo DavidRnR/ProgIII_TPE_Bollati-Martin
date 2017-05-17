@@ -9,19 +9,28 @@ public class ListEndApp {
 		
 		ListStructure listSearch;
 		ListStructure listSearchResults;
-			
+		
+		long timeStartInsert = System.nanoTime();
 		list = CSVReader.CSVReaderListEnd("datasets/dataset_500000.csv");
 		
 		listInsert = CSVReader.CSVReaderListEnd("datasets/dataset_insert_10000.csv");
 		listInsertResults = ListEndApp.insertResults(list, listInsert);
 		
 		CSVWriter.writeFromList(listInsertResults, "salida_insert_list_end");
+		long timeEndInsert = System.nanoTime();
+		long totalInsert = timeEndInsert - timeStartInsert;
+		System.out.println("Tiempo total de Insert ListStructure ingresando al final: " + totalInsert + "ns");
 		
+		long timeStartSearch = System.nanoTime();
 		listSearch = CSVReader.CSVReaderListBegining("datasets/dataset_busqueda_10000.csv");
 		listSearchResults = ListEndApp.searchResults(list, listSearch);
 		
 		CSVWriter.writeFromList(listSearchResults, "salida_busqueda_list_end");
-				
+		long timeEndSearch = System.nanoTime();
+		long totalSearch = timeEndSearch - timeStartSearch;
+		System.out.println("Tiempo total de Busqueda ListStructure END: " + totalSearch + "ns");
+		System.out.println("Promedio: "+((totalInsert+totalSearch)/2)+"ns");
+		
 		//***********************************************************************
 	}
 	

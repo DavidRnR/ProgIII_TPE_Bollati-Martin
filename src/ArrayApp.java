@@ -11,19 +11,25 @@ public class ArrayApp {
 		
 		ArrayStructure arrSearch;
 		ArrayStructure arrSearchResults;
-			
+		long timeStartInsert = System.nanoTime();
 		arr = CSVReader.CSVReaderArray("datasets/dataset_3000000.csv");
 		
 		arrInsert = CSVReader.CSVReaderArray("datasets/dataset_insert_10000.csv");
 		arrInsertResults = ArrayApp.insertResults(arr, arrInsert);
+		CSVWriter.writeFromArray(arrInsertResults, "salida_insert_array_3010000");
+		long timeEndInsert = System.nanoTime();
+		long totalInsert = timeEndInsert - timeStartInsert;
+		System.out.println("Tiempo total de Insert ArrayStructure: " + totalInsert + "ns");		
 		
-		CSVWriter.writeFromArray(arrInsertResults, "salida_insert_array_3000000");
-		
+		long timeStartSearch = System.nanoTime();
 		arrSearch = CSVReader.CSVReaderArray("datasets/dataset_busqueda_10000.csv");
 		arrSearchResults = ArrayApp.searchResults(arr, arrSearch);
 		
 		CSVWriter.writeFromArray(arrSearchResults, "salida_busqueda_array_3000000");
-		
+		long timeEndSearch = System.nanoTime();
+		long totalSearch = timeEndSearch - timeStartSearch;
+		System.out.println("Tiempo total de Busqueda ArrayStructure: " + totalSearch + "ns");
+		System.out.println("Promedio: "+((totalInsert+totalSearch)/2)+"ns");
 		//*****************************************************************		
 	}
 	/**

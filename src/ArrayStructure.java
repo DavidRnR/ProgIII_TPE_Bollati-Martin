@@ -17,6 +17,25 @@ public class ArrayStructure {
 		}
 	}
 	
+	public void addSorted(String s){
+		if(arr.length > index){
+			int i=0;
+			for (i = 0; i < index; i++) {
+				if(arr[i].compareTo(s) >= 0 ) {
+					break;
+				}
+			}
+			for(int k=arr.length-2; k >= i; k--){
+		        arr[k+1] = arr[k];            
+		      }
+		      arr[i] = s;
+			  index++;
+		}else{
+			extendArray();
+			add(s);
+		}
+	}
+	
 	/**
 	 * Recibe un ArrayStructure y agrega cada elemento en el arreglo
 	 * @param array

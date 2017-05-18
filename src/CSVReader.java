@@ -5,7 +5,7 @@ import java.io.IOException;
 public class CSVReader {
 	
 	/**
-	 * Leer CSV utilizabndo estructura de arreglo
+	 * Leer CSV utilizando estructura de arreglo
 	 * @param path
 	 * @return
 	 */
@@ -25,6 +25,35 @@ public class CSVReader {
                 	aux += items[i] + " ";
 				}
                 arr.add(aux);	
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		
+		return arr;
+	}
+	
+	/**
+	 * Leer CSV utilizando estructura de arreglo insertando ordenado
+	 * @param path
+	 * @return
+	 */
+	public static ArrayStructure CSVReaderArraySorted(String path){
+		ArrayStructure arr = new ArrayStructure();
+        String line = "";
+        String cvsSplitBy = ";";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+
+            while ((line = br.readLine()) != null) {
+
+            	String[] items = line.split(cvsSplitBy);
+                items = checkPreferences(items);
+                String aux = "";
+                for (int i = 0; i < items.length; i++) {
+                	aux += items[i] + " ";
+				}
+                arr.addSorted(aux);	
             }
         } catch (IOException e) {
             e.printStackTrace();

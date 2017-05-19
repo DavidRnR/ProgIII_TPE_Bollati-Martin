@@ -25,7 +25,7 @@ public class ArrayStructure {
 					break;
 				}
 			}
-			for(int k=arr.length-2; k >= i; k--){
+			for(int k= index-1; k >= i; k--){
 		        arr[k+1] = arr[k];            
 		      }
 		      arr[i] = s;

@@ -18,7 +18,6 @@ public class GraphStructure {
 			for (int j = 0; j < userAndPreferences.length ; j++) {
 				if(j == 0) { // Primera posicion es el ID de Usuario
 					user = addUser(userAndPreferences[j]);
-					
 				}
 				else {
 					Vertex pref = addPreference(userAndPreferences[j]);
@@ -54,11 +53,30 @@ public class GraphStructure {
 	 * @return
 	 */
 	public static ArrayList<String> getUsersWithMoreThanOneCommonPreference (String userId) {
+		int pos = mapUser.get(userId);
 		ArrayList<String> answer = new ArrayList<String>(); 
+		ArrayList<Vertex> userPrefs = users.get(pos).getAdjacents();
+		for (int i = 0; i < users.size(); i++) {
+			ArrayList<Vertex> currentUserPrefs = users.get(i).getAdjacents();
+			if(hasAtLeastTwoCommonPrefs(userPrefs, currentUserPrefs)){
+				answer.add(users.get(i).getName());
+			}
+			
+		}
 		
 		return answer;
 	}
-	
+	private static boolean hasAtLeastTwoCommonPrefs(ArrayList<Vertex> arr1, ArrayList<Vertex> arr2){
+		int cont = 0;
+		for (int i = 0; i < arr1.size() && cont < 2; i++) {
+			for (int j = 0; j < arr2.size() && cont < 2; j++) {
+				if(arr1.get(i).getName().equals(arr2.get(j).getName())){
+					cont++;
+				}
+			}
+		}
+		return cont == 2;
+	}
 	/**
 	 * Devuelve el gusto que mas le gusta a todos los usuarios
 	 * @return
@@ -81,13 +99,42 @@ public class GraphStructure {
 	 * @return
 	 */
 	public static String getUserWithDifferentPreferences (String userId) {
+		int pos = mapUser.get(userId);
+		ArrayList<Vertex> userPrefs = users.get(pos).getAdjacents();
+		String answer = "";
+		int currentQuant = userPrefs.size();
 		
+		for (int i = 0; i < users.size(); i++) {
+			int times = hasXTimesPreference(userPrefs, users.get(i).getAdjacents(), currentQuant);
+			if (times == currentQuant) {
+				answer = users.get(i).getName();
+			}else if(times < currentQuant){
+				currentQuant = times;
+				
+				answer = users.get(i).getName();
+			}
+		}
 		
-		return "";
+		return answer;
+	}
+	
+	private static int hasXTimesPreference(ArrayList<Vertex> arr1, ArrayList<Vertex> arr2, int quant){
+		int cont = 0;
+		for (int i = 0; i < arr1.size(); i++) {
+			for (int j = 0; j < arr2.size(); j++) {
+				if(arr1.get(i).getName().equals(arr2.get(j).getName())){
+					cont++;
+					if (cont > quant) {
+						return -1;
+					}
+				}
+			}
+		}
+		return cont;
 	}
 	
 	public static void printGraph() {
-		for (int i = 0; i < 9; i++) {
+		for (int i = 0; i < 50; i++) {
 			System.out.println(users.get(i).toString());
 			ArrayList<Vertex> temp = users.get(i).getAdjacents();
 			for (int j = 0; j < temp.size(); j++) {
@@ -113,12 +160,16 @@ public class GraphStructure {
 	public static void main(String[] args) {
 		ArrayStructure arr;
 		
-		arr = CSVReader.CSVReaderArray("datasets/test_dataset_10.csv");
+		arr = CSVReader.CSVReaderArray("datasets/dataset_500000.csv");
 		
 		GraphStructure.loadGraphStructure(arr);
 		
-		GraphStructure.printGraph();
+		//GraphStructure.printGraph();
 		
-		System.out.println(GraphStructure.getMostRepeatedPreference());
-	}
+		//System.out.println(getUsersWithMoreThanOneCommonPreference("28058462"));
+		
+		//System.out.println(GraphStructure.getMostRepeatedPreference());
+		
+		System.out.println(getUserWithDifferentPreferences("99102287"));
+	}//Rally;Jockey;Kitesurf;Paracaidismo;Sky
 }

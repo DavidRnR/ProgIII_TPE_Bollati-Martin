@@ -1,7 +1,10 @@
 import java.util.*;
 
 public class GraphStructure {
-	private static ArrayList<Vertex> vertex = new ArrayList<Vertex>();
+	private static ArrayList<Vertex> users = new ArrayList<Vertex>();
+	private static ArrayList<Vertex> prefs = new ArrayList<Vertex>(); 
+	static int userIndex = 0;
+	private static HashMap<String, Integer> mapUser = new HashMap<String, Integer>();
 	
 	/**
 	 * Carga la data (Usuarios y Gustos) en el grafo
@@ -9,31 +12,40 @@ public class GraphStructure {
 	 */
 	public static void loadGraphStructure (ArrayStructure data) {
 		
-		for (int i = 0; i < data.size(); i++) {
+		for (int i = 1; i < data.size(); i++) { // i=1 para saltar la primer linea DNI, nombre
 			String[] userAndPreferences = filterData(data.get(i));
-			
+			Vertex user = null;
 			for (int j = 0; j < userAndPreferences.length ; j++) {
 				if(j == 0) { // Primera posicion es el ID de Usuario
-					addUser(userAndPreferences[j]);
+					user = addUser(userAndPreferences[j]);
+					
 				}
 				else {
-					addPreference(userAndPreferences[j]);
+					Vertex pref = addPreference(userAndPreferences[j]);
+						user.addAdjacent(pref);
+						pref.addAdjacent(user);						
 				}
 			}
 		}
 	}
 	
-	public static void addPreference (String pref) {
+	public static Vertex addPreference (String pref) {
+		for (int i = 0; i < prefs.size(); i++) {
+			if(prefs.get(i).getName().equals(pref)){
+				return prefs.get(i); 
+			}			
+		}
 		Vertex preference = new Vertex(pref, "preference");
-		
-		//TODO Check sino existe la preferencia.
-		vertex.add(preference);
+		prefs.add(preference);			
+		return preference;
 	}
 	
-	public static void addUser(String userId) {
+	public static Vertex addUser(String userId) {
 		Vertex user = new Vertex(userId, "user");
-		
-		vertex.add(user);
+		users.add(user);
+		mapUser.put(userId, userIndex);
+		userIndex ++;
+		return user;
 	}
 	
 	/**
@@ -41,8 +53,8 @@ public class GraphStructure {
 	 * @param userId
 	 * @return
 	 */
-	public static ArrayList<String> getUsersWithSamePreference (String userId) {
-		ArrayList<String> answer = new ArrayList<String>();
+	public static ArrayList<String> getUsersWithMoreThanOneCommonPreference (String userId) {
+		ArrayList<String> answer = new ArrayList<String>(); 
 		
 		return answer;
 	}
@@ -52,7 +64,15 @@ public class GraphStructure {
 	 * @return
 	 */
 	public static String getMostRepeatedPreference() {
-	return "";	
+		int temp = 0;
+		String name = "";
+		for (int i = 0; i < prefs.size(); i++) {
+			if(temp < prefs.get(i).getAdjacents().size()){
+				temp = prefs.get(i).getAdjacents().size();
+				name = prefs.get(i).toString();
+			}
+		}
+	return name;	
 	}
 	
 	/**
@@ -67,8 +87,12 @@ public class GraphStructure {
 	}
 	
 	public static void printGraph() {
-		for (int i = 0; i < 50; i++) {
-			System.out.println(vertex.get(i).toString());
+		for (int i = 0; i < 9; i++) {
+			System.out.println(users.get(i).toString());
+			ArrayList<Vertex> temp = users.get(i).getAdjacents();
+			for (int j = 0; j < temp.size(); j++) {
+				System.out.print(temp.get(j) + " ");
+			}
 			System.out.println();
 		}
 	}
@@ -89,10 +113,12 @@ public class GraphStructure {
 	public static void main(String[] args) {
 		ArrayStructure arr;
 		
-		arr = CSVReader.CSVReaderArray("datasets/dataset_500000.csv");
+		arr = CSVReader.CSVReaderArray("datasets/test_dataset_10.csv");
 		
 		GraphStructure.loadGraphStructure(arr);
 		
 		GraphStructure.printGraph();
+		
+		System.out.println(GraphStructure.getMostRepeatedPreference());
 	}
 }

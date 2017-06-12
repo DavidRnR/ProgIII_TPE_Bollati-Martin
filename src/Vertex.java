@@ -37,10 +37,16 @@ public class Vertex {
 	public void addAdjacent(Vertex adj) {
 		adjacents.add(adj);
 	}
+	@Override
+	public boolean equals(Object obj) {
+		System.out.println("equals");
+		// TODO Auto-generated method stub
+		return obj.toString().equals(this.toString());
+	}
 	
 	@Override
 	public String toString() {
-		String answer = name + " "+ type;
+		String answer = name;
 		return answer;
 	}
 }

@@ -1,34 +1,38 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 public class GraphStructure {
-	private static ArrayList<Vertex> users = new ArrayList<Vertex>();
-	private static ArrayList<Vertex> prefs = new ArrayList<Vertex>(); 
-	static int userIndex = 0;
-	private static HashMap<String, Integer> mapUser = new HashMap<String, Integer>();
+	private ArrayList<Vertex> users = new ArrayList<Vertex>();
+	private ArrayList<Vertex> prefs = new ArrayList<Vertex>(); 
+	private int userIndex = 0;
+	private HashMap<String, Integer> mapUser = new HashMap<String, Integer>();
+
 	
 	/**
-	 * Carga la data (Usuarios y Gustos) en el grafo
-	 * @param data
+	 * Recibe un path de un archivo csv y carga el grafo con los datos
+	 * @param path
 	 */
-	public static void loadGraphStructure (ArrayStructure data) {
+	public void loadGraph(String path) {
 		
-		for (int i = 1; i < data.size(); i++) { // i=1 para saltar la primer linea DNI, nombre
-			String[] userAndPreferences = filterData(data.get(i));
-			Vertex user = null;
-			for (int j = 0; j < userAndPreferences.length ; j++) {
-				if(j == 0) { // Primera posicion es el ID de Usuario
-					user = addUser(userAndPreferences[j]);
-				}
-				else {
-					Vertex pref = addPreference(userAndPreferences[j]);
-						user.addAdjacent(pref);
-						pref.addAdjacent(user);						
-				}
-			}
-		}
+		 String line = "";
+	        String cvsSplitBy = ";";
+
+	        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+	        	br.readLine();
+	            while ((line = br.readLine()) != null) {
+
+	            	String[] items = line.split(cvsSplitBy);
+	
+	                loadGraphStructure(items);	
+	            }
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
 	}
 	
-	public static Vertex addPreference (String pref) {
+	public Vertex addPreference (String pref) {
 		for (int i = 0; i < prefs.size(); i++) {
 			if(prefs.get(i).getName().equals(pref)){
 				return prefs.get(i); 
@@ -39,7 +43,7 @@ public class GraphStructure {
 		return preference;
 	}
 	
-	public static Vertex addUser(String userId) {
+	public Vertex addUser(String userId) {
 		Vertex user = new Vertex(userId, "user");
 		users.add(user);
 		mapUser.put(userId, userIndex);
@@ -52,7 +56,7 @@ public class GraphStructure {
 	 * @param userId
 	 * @return
 	 */
-	public static ArrayList<String> getUsersWithMoreThanOneCommonPreference (String userId) {
+	public ArrayList<String> getUsersWithMoreThanOneCommonPreference (String userId) {
 		int pos = mapUser.get(userId);
 		ArrayList<String> answer = new ArrayList<String>(); 
 		ArrayList<Vertex> userPrefs = users.get(pos).getAdjacents();
@@ -66,7 +70,7 @@ public class GraphStructure {
 		
 		return answer;
 	}
-	private static boolean hasAtLeastTwoCommonPrefs(ArrayList<Vertex> arr1, ArrayList<Vertex> arr2){
+	private boolean hasAtLeastTwoCommonPrefs(ArrayList<Vertex> arr1, ArrayList<Vertex> arr2){
 		int cont = 0;
 		for (int i = 0; i < arr1.size() && cont < 2; i++) {
 			for (int j = 0; j < arr2.size() && cont < 2; j++) {
@@ -81,7 +85,7 @@ public class GraphStructure {
 	 * Devuelve el gusto que mas le gusta a todos los usuarios
 	 * @return
 	 */
-	public static String getMostRepeatedPreference() {
+	public String getMostRepeatedPreference() {
 		int temp = 0;
 		String name = "";
 		for (int i = 0; i < prefs.size(); i++) {
@@ -98,17 +102,19 @@ public class GraphStructure {
 	 * @param userId
 	 * @return
 	 */
-	public static String getUserWithDifferentPreferences (String userId) {
+	public String getUserWithDifferentPreferences (String userId) {
 		int pos = mapUser.get(userId);
+
 		ArrayList<Vertex> userPrefs = users.get(pos).getAdjacents();
 		String answer = "";
 		int currentQuant = userPrefs.size();
 		
 		for (int i = 0; i < users.size(); i++) {
 			int times = hasXTimesPreference(userPrefs, users.get(i).getAdjacents(), currentQuant);
+	
 			if (times == currentQuant) {
 				answer = users.get(i).getName();
-			}else if(times < currentQuant){
+			}else if(times < currentQuant && times != -1){
 				currentQuant = times;
 				
 				answer = users.get(i).getName();
@@ -118,7 +124,15 @@ public class GraphStructure {
 		return answer;
 	}
 	
-	private static int hasXTimesPreference(ArrayList<Vertex> arr1, ArrayList<Vertex> arr2, int quant){
+	/**
+	 * Dados dos ArrayList de Vertex(Adyacentes) y una cantidad actual de casos repetidos,
+	 * si el resultado es menor que el considerado actualmente, devuelve el valor actualizado. Sino -1.
+	 * @param arr1
+	 * @param arr2
+	 * @param quant
+	 * @return
+	 */
+	private int hasXTimesPreference(ArrayList<Vertex> arr1, ArrayList<Vertex> arr2, int quant){
 		int cont = 0;
 		for (int i = 0; i < arr1.size(); i++) {
 			for (int j = 0; j < arr2.size(); j++) {
@@ -132,44 +146,50 @@ public class GraphStructure {
 		}
 		return cont;
 	}
-	
-	public static void printGraph() {
-		for (int i = 0; i < 50; i++) {
-			System.out.println(users.get(i).toString());
-			ArrayList<Vertex> temp = users.get(i).getAdjacents();
-			for (int j = 0; j < temp.size(); j++) {
-				System.out.print(temp.get(j) + " ");
-			}
-			System.out.println();
-		}
-	}
+
 	
 	//**********************************************************************
 	
-	private static String[] filterData (String line) {
-		//Recibe String ej: "354353 Tenis Futbol"
-				
-		String SplitBy = " ";
+	/**
+	 * Carga la data (Usuarios y Gustos) en el grafo
+	 * @param data
+	 */
+	private void loadGraphStructure (String[] userAndPreferences) {
 		
-		String[] items = line.split(SplitBy);
-		
-		return items;
+		    userAndPreferences = checkPreferences(userAndPreferences);
+		    
+			Vertex user = null;
+			for (int j = 0; j < userAndPreferences.length ; j++) {
+				if(j == 0) { // Primera posicion es el ID de Usuario
+					user = addUser(userAndPreferences[j]);
+				}
+				else {
+					Vertex pref = addPreference(userAndPreferences[j]);
+						user.addAdjacent(pref);
+						pref.addAdjacent(user);						
+				}
+			}
 	}
 	
-	//********************************Main for test***********************************
-	public static void main(String[] args) {
-		ArrayStructure arr;
-		
-		arr = CSVReader.CSVReaderArray("datasets/dataset_500000.csv");
-		
-		GraphStructure.loadGraphStructure(arr);
-		
-		//GraphStructure.printGraph();
-		
-		//System.out.println(getUsersWithMoreThanOneCommonPreference("28058462"));
-		
-		//System.out.println(GraphStructure.getMostRepeatedPreference());
-		
-		System.out.println(getUserWithDifferentPreferences("99102287"));
-	}//Rally;Jockey;Kitesurf;Paracaidismo;Sky
+	/**
+	 * Checkea si los gustos de un usuario no estan repetidos
+	 * @param arr
+	 * @return
+	 */
+	private static String[] checkPreferences(String[] arr){
+    	
+    	ListStructure ls = new ListStructure();
+    	for (int i = 0; i < arr.length; i++) {
+			if(!ls.contains(arr[i])){
+				ls.addEnd(arr[i]);
+			}
+		}
+    	
+    	arr = new String[ls.size()];
+    	
+    	for (int i = 0; i < ls.size(); i++) {
+			arr[i] = ls.get(i);
+		}
+    	return arr;
+    } 
 }

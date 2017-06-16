@@ -176,7 +176,7 @@ public class GraphStructure {
 	 * @param arr
 	 * @return
 	 */
-	private static String[] checkPreferences(String[] arr){
+	private String[] checkPreferences(String[] arr){
     	
     	ListStructure ls = new ListStructure();
     	for (int i = 0; i < arr.length; i++) {
